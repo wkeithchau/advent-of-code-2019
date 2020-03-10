@@ -1,4 +1,4 @@
-import { getInput } from "../input.mjs";
+import { getInput } from "../input.js";
 
 const fuelRequired = mass => {
   return Math.floor(mass / 3) - 2;

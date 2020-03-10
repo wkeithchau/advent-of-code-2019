@@ -1,14 +1,14 @@
 import fs from "fs";
 import path from "path";
 
+const ROOTPATH = path.dirname(import.meta.url);
+
 const readFile = path => {
   return fs.readFileSync(path, "utf8");
 };
 
 export const getInput = absUrl => {
-  const rootPath =
-    "file:///Users/Keith/GitHub/ninefivetwo/advent-of-code-2019/";
-  const relativePath = path.relative(rootPath, absUrl);
+  const relativePath = path.relative(ROOTPATH, absUrl);
   const inputPath = `${path.dirname(relativePath)}/input`;
 
   const input = readFile(inputPath);

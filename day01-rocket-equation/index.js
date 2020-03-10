@@ -1,44 +1,19 @@
-import { getInput } from "../input.js";
+import { getInput } from "../input";
+import { advanceFuelRequired, totalFuel } from "./fuel";
 
-const fuelRequired = mass => {
-  return Math.floor(mass / 3) - 2;
-};
-
-const addedFuelRequired = mass => {
-  let fuel = fuelRequired(mass);
-
-  if (fuel > 0) {
-    fuel += addedFuelRequired(fuel);
-  }
-  return Math.max(fuel, 0);
-};
+const INPUT = getInput(import.meta.url);
+const MODULE_MASSES = INPUT.map(data => Number(data));
 
 const part1 = () => {
-  const moduleMasses = getInput(import.meta.url);
-
-  let totalFuel = 0;
-  moduleMasses.forEach(mass => {
-    const fuel = fuelRequired(mass);
-    totalFuel += fuel;
-  });
-
+  const fuel = totalFuel(MODULE_MASSES);
   console.log(
-    `Sum of the fuel requirements for all of the modules on your spacecraft: ${totalFuel}`
+    `Sum of the fuel requirements for all of the modules on your spacecraft: ${fuel}`
   );
-  return totalFuel;
 };
 
 const part2 = () => {
-  const moduleMasses = getInput(import.meta.url);
-
-  let totalFuel = 0;
-  moduleMasses.forEach(mass => {
-    const fuel = addedFuelRequired(mass);
-    totalFuel += fuel;
-  });
-
-  console.log(`Taking into account the mass of added fuel: ${totalFuel}`);
-  return totalFuel;
+  const fuel = totalFuel(MODULE_MASSES, advanceFuelRequired);
+  console.log(`Taking into account the mass of added fuel: ${fuel}`);
 };
 
 part1();

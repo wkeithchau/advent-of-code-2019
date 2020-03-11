@@ -1,7 +1,7 @@
 import { getInput } from '../utils/input'
 import { advanceFuelRequired, totalFuel } from './fuel'
 
-const INPUT = getInput(import.meta.url)
+const INPUT = getInput(import.meta.url, '\n')
 const MODULE_MASSES = INPUT.map(data => Number(data))
 
 const part1 = () => {

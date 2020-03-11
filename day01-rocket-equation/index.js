@@ -1,4 +1,4 @@
-import { getInput } from '../input'
+import { getInput } from '../utils/input'
 import { advanceFuelRequired, totalFuel } from './fuel'
 
 const INPUT = getInput(import.meta.url)

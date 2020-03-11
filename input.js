@@ -1,17 +1,17 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs'
+import path from 'path'
 
-const ROOTPATH = path.dirname(import.meta.url);
+const ROOTPATH = path.dirname(import.meta.url)
 
 const readFile = path => {
-  return fs.readFileSync(path, "utf8");
-};
+    return fs.readFileSync(path, 'utf8')
+}
 
 export const getInput = absUrl => {
-  const relativePath = path.relative(ROOTPATH, absUrl);
-  const inputPath = `${path.dirname(relativePath)}/input`;
+    const relativePath = path.relative(ROOTPATH, absUrl)
+    const inputPath = `${path.dirname(relativePath)}/input`
 
-  const input = readFile(inputPath);
-  const lines = input.split("\n");
-  return lines;
-};
+    const input = readFile(inputPath)
+    const lines = input.split('\n')
+    return lines
+}

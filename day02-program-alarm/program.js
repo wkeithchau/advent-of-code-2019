@@ -55,3 +55,24 @@ export const restoreState = (program, states = []) => {
     })
     return newProgram
 }
+
+export const findOutput = (results, output = []) => {
+    if (output.length === 0) {
+        return []
+    }
+
+    const [position, value] = output
+    let matchedNoun, matchedVerb
+    results.some(result => {
+        if (result[position] === value) {
+            matchedNoun = result[1]
+            matchedVerb = result[2]
+            return true
+        }
+    })
+    return [matchedNoun, matchedVerb]
+}
+
+export const getAnswer = (noun, verb) => {
+    return 100 * noun + verb
+}

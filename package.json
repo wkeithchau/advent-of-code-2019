@@ -14,6 +14,7 @@
         "test": "mocha -r esm **/*test*",
         "lint": "eslint .",
         "day1": "node -r esm day01-rocket-equation/index.js",
-        "day2": "node -r esm day02-program-alarm/index.js"
+        "day2": "node -r esm day02-program-alarm/index.js",
+        "day3": "node -r esm day03-crossed-wires/index.js"
     }
 }

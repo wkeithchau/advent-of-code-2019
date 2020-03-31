@@ -42,7 +42,35 @@ export const drawLeft = (length, head, headType) => {
     return [newXPos, yPos]
 }
 
-export const drawRight = (length, head, headType) => {}
+export const drawRight = (length, head, headType) => {
+    const [xPos, yPos] = head
+
+    for (let i = 1; i <= length; i += 1) {
+        const pos = xPos + i
+
+        if (pos >= Map.grid[0].length) {
+            Map.grid.forEach((row, idx) => {
+                let newSymbol = symbol.space
+                if (idx === yPos) {
+                    newSymbol = headType
+                }
+                Map.grid[idx].push(newSymbol)
+            })
+        } else {
+            Map.grid.forEach((row, idx) => {
+                const currentSymbol = row[pos]
+                let newSymbol = symbol.space
+                if (idx === yPos) {
+                    newSymbol = getSymbol(currentSymbol, headType)
+                }
+                Map.grid[idx][pos] = newSymbol
+            })
+        }
+    }
+
+    const newXPos = Math.min(Map.grid[0].length, xPos + length)
+    return [newXPos, yPos]
+}
 
 export const drawUp = (length, head, headType) => {}
 

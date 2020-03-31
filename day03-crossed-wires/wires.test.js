@@ -187,7 +187,146 @@ describe.only('Day03 - Crossed Wires', function() {
     })
 
     describe('drawRight', function() {
-        it('', function() {})
+        let blankGrid
+
+        before(function() {
+            const space = symbol.space
+            blankGrid = [
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+            ]
+        })
+
+        beforeEach(function() {
+            Map.reset()
+        })
+
+        it('Drawing off the current grid', function() {
+            const length = 5
+            const head = [4, 2]
+            const headType = symbol.wire1
+            const grid = cloneDeep(blankGrid)
+            grid[2][4] = headType
+            Map.grid = grid
+
+            drawRight(length, head, headType)
+            const updatedGrid = Map.grid
+            // Assert grid width
+            updatedGrid.forEach((row, idx) => {
+                expect(row).to.have.length(10)
+                if (idx !== head[1]) {
+                    expect(row).to.have.ordered.members([
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                    ])
+                }
+            })
+            // Assert updated row
+            expect(updatedGrid[head[1]]).to.have.ordered.members([
+                symbol.space,
+                symbol.space,
+                symbol.space,
+                symbol.space,
+                headType,
+                headType,
+                headType,
+                headType,
+                headType,
+                headType,
+            ])
+        })
+
+        it('Drawing on the existing grid', function() {
+            const length = 2
+            const head = [1, 0]
+            const headType = symbol.wire1
+            const grid = cloneDeep(blankGrid)
+            grid[0][1] = headType
+            Map.grid = grid
+
+            drawRight(length, head, headType)
+            const updatedGrid = Map.grid
+            // Assert grid width
+            updatedGrid.forEach((row, idx) => {
+                expect(row).to.have.length(5)
+                if (idx !== head[1]) {
+                    expect(row).to.have.ordered.members([
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                    ])
+                }
+            })
+            // Assert updated row
+            expect(updatedGrid[head[1]]).to.have.ordered.members([
+                symbol.space,
+                headType,
+                headType,
+                headType,
+                symbol.space,
+            ])
+        })
+
+        it('Drawing on mixture of off/on the current grid', function() {
+            const length = 3
+            const head = [2, 3]
+            const headType = symbol.wire1
+            const grid = cloneDeep(blankGrid)
+            grid[3][2] = headType
+            Map.grid = grid
+
+            drawRight(length, head, headType)
+            const updatedGrid = Map.grid
+            // Assert grid width
+            updatedGrid.forEach((row, idx) => {
+                expect(row).to.have.length(6)
+                if (idx !== head[1]) {
+                    expect(row).to.have.ordered.members([
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                    ])
+                }
+            })
+            // Assert updated row
+            expect(updatedGrid[head[1]]).to.have.ordered.members([
+                symbol.space,
+                symbol.space,
+                headType,
+                headType,
+                headType,
+                headType,
+            ])
+        })
+
+        it('Returns the updated position of the head', function() {
+            const length = 3
+            const head = [2, 1]
+            const headType = symbol.wire1
+            const grid = cloneDeep(blankGrid)
+            grid[1][2] = headType
+            Map.grid = grid
+
+            const updated = drawRight(length, head, headType)
+            expect(updated).to.be.an('array')
+            expect(updated).to.have.ordered.members([5, 1])
+        })
     })
 
     describe('drawUp', function() {

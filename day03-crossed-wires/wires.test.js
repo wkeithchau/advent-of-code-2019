@@ -1,6 +1,203 @@
 import { expect } from 'chai'
+import cloneDeep from 'lodash.clonedeep'
 
-describe('Day03 - Crossed Wires', function() {
+import { symbol } from './constants'
+import Map from './map'
+import { drawDown, drawLeft, drawRight, drawUp, getSymbol } from './wires'
+
+describe.only('Day03 - Crossed Wires', function() {
+    describe('getSymbol', function() {
+        it('Returns `x` when existing symbol is already a wire', function() {
+            const existing = symbol.wire1
+            const desired = symbol.wire2
+            const updated = getSymbol(existing, desired)
+            expect(updated).to.equal(symbol.cross)
+        })
+
+        it('Returns the desired wire symbol when existing symbol is the same wire', function() {
+            const existing = symbol.wire1
+            const desired = symbol.wire1
+            const updated = getSymbol(existing, desired)
+            expect(updated).to.equal(desired)
+        })
+
+        it('Returns the desired wire symbol when the existing symbol is a space', function() {
+            const existing = '.'
+            const desired = symbol.wire1
+            const updated = getSymbol(existing, desired)
+            expect(updated).to.equal(desired)
+        })
+
+        it('Returns the port when the existing symbol is a port', function() {
+            const existing = 'o'
+            const desired = symbol.wire2
+            const updated = getSymbol(existing, desired)
+            expect(updated).to.equal(symbol.port)
+        })
+
+        it('Returns the cross symbol when the existing symbol is a cross', function() {
+            const existing = 'x'
+            const desired = symbol.wire2
+            const updated = getSymbol(existing, desired)
+            expect(updated).to.equal(symbol.cross)
+        })
+    })
+
+    describe('drawLeft', function() {
+        let blankGrid
+
+        before(function() {
+            const space = symbol.space
+            blankGrid = [
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+            ]
+        })
+
+        beforeEach(function() {
+            Map.reset()
+        })
+
+        it('Drawing off the current grid', function() {
+            const length = 5
+            const head = [0, 2]
+            const headType = symbol.wire1
+            const grid = cloneDeep(blankGrid)
+            grid[2][0] = headType
+            Map.grid = grid
+
+            drawLeft(length, head, headType)
+            const updatedGrid = Map.grid
+            // Assert grid width
+            updatedGrid.forEach((row, idx) => {
+                expect(row).to.have.length(10)
+                if (idx !== head[1]) {
+                    expect(row).to.have.ordered.members([
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                    ])
+                }
+            })
+            // Assert updated row
+            expect(updatedGrid[head[1]]).to.have.ordered.members([
+                headType,
+                headType,
+                headType,
+                headType,
+                headType,
+                headType,
+                symbol.space,
+                symbol.space,
+                symbol.space,
+                symbol.space,
+            ])
+        })
+
+        it('Drawing on the existing grid', function() {
+            const length = 2
+            const head = [3, 4]
+            const headType = symbol.wire1
+            const grid = cloneDeep(blankGrid)
+            grid[4][3] = headType
+            Map.grid = grid
+
+            drawLeft(length, head, headType)
+            const updatedGrid = Map.grid
+            // Assert grid width
+            updatedGrid.forEach((row, idx) => {
+                expect(row).to.have.length(5)
+                if (idx !== head[1]) {
+                    expect(row).to.have.ordered.members([
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                    ])
+                }
+            })
+            // Assert updated row
+            expect(updatedGrid[head[1]]).to.have.ordered.members([
+                symbol.space,
+                headType,
+                headType,
+                headType,
+                symbol.space,
+            ])
+        })
+
+        it('Drawing on mixture of off/on the current grid', function() {
+            const length = 3
+            const head = [2, 1]
+            const headType = symbol.wire1
+            const grid = cloneDeep(blankGrid)
+            grid[1][2] = headType
+            Map.grid = grid
+
+            drawLeft(length, head, headType)
+            const updatedGrid = Map.grid
+            // Assert grid width
+            updatedGrid.forEach((row, idx) => {
+                expect(row).to.have.length(6)
+                if (idx !== head[1]) {
+                    expect(row).to.have.ordered.members([
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                        symbol.space,
+                    ])
+                }
+            })
+            // Assert updated row
+            expect(updatedGrid[head[1]]).to.have.ordered.members([
+                headType,
+                headType,
+                headType,
+                headType,
+                symbol.space,
+                symbol.space,
+            ])
+        })
+
+        it('Returns the updated position of the head', function() {
+            const length = 3
+            const head = [2, 1]
+            const headType = symbol.wire1
+            const grid = cloneDeep(blankGrid)
+            grid[1][2] = headType
+            Map.grid = grid
+
+            const updated = drawLeft(length, head, headType)
+            expect(updated).to.be.an('array')
+            expect(updated).to.have.ordered.members([0, 1])
+        })
+    })
+
+    describe('drawRight', function() {
+        it('', function() {})
+    })
+
+    describe('drawUp', function() {
+        it('', function() {})
+    })
+
+    describe('drawDown', function() {
+        it('', function() {})
+    })
+
     // Basic sample:
     // wire1 = R8,U5,L5,D3
     // wire2 = U7,R6,D4,L4

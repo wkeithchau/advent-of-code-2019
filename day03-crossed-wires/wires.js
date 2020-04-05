@@ -117,8 +117,8 @@ export const drawDown = (length, head, headType) => {
 
 export const mapSection = (section, headType) => {
     const sec = section.slice()
-    const direction = sec.shift()
-    const length = Number(sec)
+    const direction = sec[0]
+    const length = Number(sec.substring(1))
 
     let head
     if (headType === symbol.wire1) {

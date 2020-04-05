@@ -1,11 +1,18 @@
 import { expect } from 'chai'
 import cloneDeep from 'lodash.clonedeep'
 
-import { symbol } from './constants'
+import { orientation, symbol } from './constants'
 import Map from './map'
-import { drawDown, drawLeft, drawRight, drawUp, getSymbol } from './wires'
+import {
+    drawDown,
+    drawLeft,
+    drawRight,
+    drawUp,
+    getSymbol,
+    mapSection,
+} from './wires'
 
-describe.only('Day03 - Crossed Wires', function() {
+describe('Day03 - Crossed Wires', function() {
     describe('getSymbol', function() {
         it('Returns `x` when existing symbol is already a wire', function() {
             const existing = symbol.wire1
@@ -58,6 +65,10 @@ describe.only('Day03 - Crossed Wires', function() {
         })
 
         beforeEach(function() {
+            Map.reset()
+        })
+
+        after(function() {
             Map.reset()
         })
 
@@ -204,6 +215,10 @@ describe.only('Day03 - Crossed Wires', function() {
             Map.reset()
         })
 
+        after(function() {
+            Map.reset()
+        })
+
         it('Drawing off the current grid', function() {
             const length = 5
             const head = [4, 2]
@@ -347,6 +362,10 @@ describe.only('Day03 - Crossed Wires', function() {
             Map.reset()
         })
 
+        after(function() {
+            Map.reset()
+        })
+
         it('Drawing off the current grid', function() {
             const length = 5
             const head = [2, 0]
@@ -478,6 +497,10 @@ describe.only('Day03 - Crossed Wires', function() {
             Map.reset()
         })
 
+        after(function() {
+            Map.reset()
+        })
+
         it('Drawing off the current grid', function() {
             const length = 5
             const head = [2, 4]
@@ -588,6 +611,81 @@ describe.only('Day03 - Crossed Wires', function() {
             const updated = drawDown(length, head, headType)
             expect(updated).to.be.an('array')
             expect(updated).to.have.ordered.members([1, 5])
+        })
+    })
+
+    describe('mapSection', function() {
+        let headType
+        let initialGrid
+
+        before(function() {
+            headType = symbol.wire2
+            const space = symbol.space
+            initialGrid = [
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+                [space, space, headType, space, space],
+                [space, space, space, space, space],
+                [space, space, space, space, space],
+            ]
+        })
+
+        beforeEach(function() {
+            Map.reset()
+        })
+
+        after(function() {
+            Map.reset()
+        })
+
+        it('Draw left correctly', function() {
+            Map.grid = cloneDeep(initialGrid)
+            Map.wire2Head = [2, 2]
+            const section = `${orientation.left}1`
+
+            mapSection(section, headType)
+            const head = Map.wire2Head
+            expect(head).to.have.ordered.members([1, 2])
+        })
+
+        it('Draw right correctly', function() {
+            Map.grid = cloneDeep(initialGrid)
+            Map.wire2Head = [2, 2]
+            const section = `${orientation.right}1`
+
+            mapSection(section, headType)
+            const head = Map.wire2Head
+            expect(head).to.have.ordered.members([3, 2])
+        })
+
+        it('Draw up correctly', function() {
+            Map.grid = cloneDeep(initialGrid)
+            Map.wire2Head = [2, 2]
+            const section = `${orientation.up}1`
+
+            mapSection(section, headType)
+            const head = Map.wire2Head
+            expect(head).to.have.ordered.members([2, 1])
+        })
+
+        it('Draw down correctly', function() {
+            Map.grid = cloneDeep(initialGrid)
+            Map.wire2Head = [2, 2]
+            const section = `${orientation.down}1`
+
+            mapSection(section, headType)
+            const head = Map.wire2Head
+            expect(head).to.have.ordered.members([2, 3])
+        })
+
+        it('Draw nothing when the direction is unknown', function() {
+            Map.grid = cloneDeep(initialGrid)
+            Map.wire2Head = [2, 2]
+            const section = 'Z1'
+
+            mapSection(section, headType)
+            const head = Map.wire2Head
+            expect(head).to.have.ordered.members([2, 2])
         })
     })
 

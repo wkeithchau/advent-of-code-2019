@@ -72,9 +72,48 @@ export const drawRight = (length, head, headType) => {
     return [newXPos, yPos]
 }
 
-export const drawUp = (length, head, headType) => {}
+export const drawUp = (length, head, headType) => {
+    const [xPos, yPos] = head
 
-export const drawDown = (length, head, headType) => {}
+    for (let i = 1; i <= length; i += 1) {
+        let pos = yPos - i
+
+        if (pos < 0) {
+            const newRow = Array(Map.grid[0].length)
+            newRow.fill(symbol.space)
+            Map.grid.unshift(newRow)
+            pos = 0
+        }
+
+        const currentSymbol = Map.grid[pos][xPos]
+        const updatedSymbol = getSymbol(currentSymbol, headType)
+        Map.grid[pos][xPos] = updatedSymbol
+    }
+
+    const newYPos = Math.max(0, yPos - length)
+    return [xPos, newYPos]
+}
+
+export const drawDown = (length, head, headType) => {
+    const [xPos, yPos] = head
+
+    for (let i = 1; i <= length; i += 1) {
+        const pos = yPos + i
+
+        if (pos >= Map.grid.length) {
+            const newRow = Array(Map.grid[0].length)
+            newRow.fill(symbol.space)
+            Map.grid.push(newRow)
+        }
+
+        const currentSymbol = Map.grid[pos][xPos]
+        const updatedSymbol = getSymbol(currentSymbol, headType)
+        Map.grid[pos][xPos] = updatedSymbol
+    }
+
+    const newYPos = Math.min(Map.grid.length, yPos + length)
+    return [xPos, newYPos]
+}
 
 export const mapSection = (section, headType) => {
     const sec = section.slice()

@@ -217,4 +217,16 @@ describe('Wire Class', function() {
             expect(wireSpy.calledOnceWith(length)).to.be.true
         })
     })
+
+    describe('addSegments', function() {
+        it('Calls addSegment the correctly', function() {
+            const wireSpy = sinon.spy(wire, 'addSegment')
+            spies.push(wireSpy)
+
+            const wireSections = ['R8', 'U5', 'L5', 'D3']
+            wire.addSegments(wireSections)
+
+            expect(wireSpy.callCount).to.equal(wireSections.length)
+        })
+    })
 })

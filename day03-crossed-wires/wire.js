@@ -50,6 +50,12 @@ class Wire {
         }
     }
 
+    addSegments = sections => {
+        sections.forEach(section => {
+            this.addSegment(section)
+        })
+    }
+
     reset = () => {
         this.xPos = 0
         this.yPos = 0

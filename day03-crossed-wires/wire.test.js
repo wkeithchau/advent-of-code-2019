@@ -219,7 +219,7 @@ describe('Wire Class', function() {
     })
 
     describe('addSegments', function() {
-        it('Calls addSegment the correctly', function() {
+        it('Calls addSegment correctly', function() {
             const wireSpy = sinon.spy(wire, 'addSegment')
             spies.push(wireSpy)
 

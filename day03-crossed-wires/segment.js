@@ -6,12 +6,12 @@ const PLANE = {
 }
 
 class Segment {
-    x1
-    x2
-    y1
-    y2
-    direction
-    initial
+    x1 = undefined
+    x2 = undefined
+    y1 = undefined
+    y2 = undefined
+    direction = undefined
+    initial = undefined
 
     constructor(pointA, pointB, direction, steps) {
         this.x1 = pointA.x

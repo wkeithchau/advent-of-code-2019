@@ -22,4 +22,18 @@ const part1 = () => {
     )
 }
 
+const part2 = () => {
+    const wire1 = new Wire()
+    wire1.addSegments(WIRE1)
+    const wire2 = new Wire()
+    wire2.addSegments(WIRE2)
+
+    const crosses = findCrosses(wire1, wire2)
+    const cross = closestCross(crosses, 'steps')
+    const steps = cross.steps
+
+    console.log(`Closest intersection to the port has steps: ${steps}`)
+}
+
 part1()
+part2()

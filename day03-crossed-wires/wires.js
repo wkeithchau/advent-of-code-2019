@@ -29,7 +29,8 @@ export const crossSteps = (cross, segments) => {
         return
     }
 
-    return Math.min(...stepDistances)
+    const totalSteps = stepDistances.reduce((total, value) => total + value)
+    return totalSteps
 }
 
 export const findCrosses = (wire1, wire2) => {

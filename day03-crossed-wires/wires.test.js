@@ -41,7 +41,7 @@ describe('Day03 - Crossed Wires', function() {
     })
 
     describe('crossSteps', function() {
-        it('Returns the shorter steps', function() {
+        it('Returns the total steps', function() {
             const cross = { x: 5, y: 5 }
             const seg1 = new Segment(
                 { x: -5, y: 5 },
@@ -57,7 +57,7 @@ describe('Day03 - Crossed Wires', function() {
             )
 
             const steps = crossSteps(cross, [seg1, seg2])
-            expect(steps).to.equal(7)
+            expect(steps).to.equal(27)
         })
 
         it('Returns undefined when segments do not have steps', function() {
@@ -139,16 +139,19 @@ describe('Day03 - Crossed Wires', function() {
                 )
             )
             wire2.segments.push(
-                new Segment({ x: 2, y: -1 }, { x: 2, y: 1 }),
-                orientation.right,
-                67
+                new Segment(
+                    { x: 2, y: -1 },
+                    { x: 2, y: 1 },
+                    orientation.down,
+                    67
+                )
             )
 
             const crosses = findCrosses(wire1, wire2)
             const expectedCrosses = [
-                { x: -1, y: 0, distance: 1, steps: 18 },
-                { x: 2, y: 0, distance: 2, steps: 21 },
-                { x: -1, y: -5, distance: 6, steps: 44 },
+                { x: -1, y: 0, distance: 1, steps: 67 },
+                { x: 2, y: 0, distance: 2, steps: 89 },
+                { x: -1, y: -5, distance: 6, steps: 106 },
             ]
 
             expect(crosses).to.have.length(3)
@@ -282,6 +285,93 @@ describe('Day03 - Crossed Wires', function() {
             const crosses = findCrosses(wire1, wire2)
             const cross = closestCross(crosses)
             expect(cross.distance).to.equal(expectedDistance)
+        })
+
+        it('Basic sample: steps of 30', function() {
+            const WIRE1 = ['R8', 'U5', 'L5', 'D3']
+            const WIRE2 = ['U7', 'R6', 'D4', 'L4']
+            const expectedSteps = 30
+
+            const wire1 = new Wire()
+            wire1.addSegments(WIRE1)
+            const wire2 = new Wire()
+            wire2.addSegments(WIRE2)
+
+            const crosses = findCrosses(wire1, wire2)
+            const cross = closestCross(crosses, 'steps')
+            expect(cross.steps).to.equal(expectedSteps)
+        })
+
+        it('Extended sample 1: steps of 610', function() {
+            const WIRE1 = [
+                'R75',
+                'D30',
+                'R83',
+                'U83',
+                'L12',
+                'D49',
+                'R71',
+                'U7',
+                'L72',
+            ]
+            const WIRE2 = [
+                'U62',
+                'R66',
+                'U55',
+                'R34',
+                'D71',
+                'R55',
+                'D58',
+                'R83',
+            ]
+            const expectedSteps = 610
+
+            const wire1 = new Wire()
+            wire1.addSegments(WIRE1)
+            const wire2 = new Wire()
+            wire2.addSegments(WIRE2)
+
+            const crosses = findCrosses(wire1, wire2)
+            const cross = closestCross(crosses, 'steps')
+            expect(cross.steps).to.equal(expectedSteps)
+        })
+
+        it('Extended sample 2: steps of 410', function() {
+            const WIRE1 = [
+                'R98',
+                'U47',
+                'R26',
+                'D63',
+                'R33',
+                'U87',
+                'L62',
+                'D20',
+                'R33',
+                'U53',
+                'R51',
+            ]
+            const WIRE2 = [
+                'U98',
+                'R91',
+                'D20',
+                'R16',
+                'D67',
+                'R40',
+                'U7',
+                'R15',
+                'U6',
+                'R7',
+            ]
+            const expectedSteps = 410
+
+            const wire1 = new Wire()
+            wire1.addSegments(WIRE1)
+            const wire2 = new Wire()
+            wire2.addSegments(WIRE2)
+
+            const crosses = findCrosses(wire1, wire2)
+            const cross = closestCross(crosses, 'steps')
+            expect(cross.steps).to.equal(expectedSteps)
         })
     })
 })

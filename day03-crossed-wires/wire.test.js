@@ -42,6 +42,20 @@ describe('Wire Class', function() {
             expect(segment.y2).to.equal(wire.yPos)
         })
 
+        it('New segment has correct direction', function() {
+            const length = 5
+            wire.addLeft(length)
+            const segment = wire.segments[0]
+            expect(segment.direction).to.equal(orientation.left)
+        })
+
+        it('New segment has correct initial', function() {
+            const length = 5
+            wire.addLeft(length)
+            const segment = wire.segments[0]
+            expect(segment.initial).to.equal(0)
+        })
+
         it('Updates xPos with new value', function() {
             const length = 5
             wire.addLeft(length)
@@ -65,6 +79,20 @@ describe('Wire Class', function() {
             expect(segment.x2).to.equal(length)
             expect(segment.y1).to.equal(wire.yPos)
             expect(segment.y2).to.equal(wire.yPos)
+        })
+
+        it('New segment has correct direction', function() {
+            const length = 5
+            wire.addRight(length)
+            const segment = wire.segments[0]
+            expect(segment.direction).to.equal(orientation.right)
+        })
+
+        it('New segment has correct initial', function() {
+            const length = 5
+            wire.addDown(length)
+            const segment = wire.segments[0]
+            expect(segment.initial).to.equal(0)
         })
 
         it('Updates xPos with new value', function() {
@@ -92,6 +120,20 @@ describe('Wire Class', function() {
             expect(segment.y2).to.equal(length)
         })
 
+        it('New segment has correct direction', function() {
+            const length = 5
+            wire.addUp(length)
+            const segment = wire.segments[0]
+            expect(segment.direction).to.equal(orientation.up)
+        })
+
+        it('New segment has correct initial', function() {
+            const length = 5
+            wire.addUp(length)
+            const segment = wire.segments[0]
+            expect(segment.initial).to.equal(0)
+        })
+
         it('Updates yPos with new value', function() {
             const length = 5
             wire.addUp(length)
@@ -115,6 +157,20 @@ describe('Wire Class', function() {
             expect(segment.x2).to.equal(wire.xPos)
             expect(segment.y1).to.equal(-length)
             expect(segment.y2).to.equal(initialYPos)
+        })
+
+        it('New segment has correct direction', function() {
+            const length = 5
+            wire.addDown(length)
+            const segment = wire.segments[0]
+            expect(segment.direction).to.equal(orientation.down)
+        })
+
+        it('New segment has correct initial', function() {
+            const length = 5
+            wire.addDown(length)
+            const segment = wire.segments[0]
+            expect(segment.initial).to.equal(0)
         })
 
         it('Updates yPos with new value', function() {

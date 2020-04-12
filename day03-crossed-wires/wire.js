@@ -5,41 +5,61 @@ class Wire {
     xPos = 0
     yPos = 0
     segments = []
+    steps = 0
 
     addLeft = length => {
         const newXPos = this.xPos - length
         const pointA = { x: newXPos, y: this.yPos }
         const pointB = { x: this.xPos, y: this.yPos }
-        const segment = new Segment(pointA, pointB, orientation.left)
+        const segment = new Segment(
+            pointA,
+            pointB,
+            orientation.left,
+            this.steps
+        )
         this.segments.push(segment)
         this.xPos = newXPos
+        this.steps += length
     }
 
     addRight = length => {
         const newXPos = this.xPos + length
         const pointA = { x: this.xPos, y: this.yPos }
         const pointB = { x: newXPos, y: this.yPos }
-        const segment = new Segment(pointA, pointB, orientation.right)
+        const segment = new Segment(
+            pointA,
+            pointB,
+            orientation.right,
+            this.steps
+        )
         this.segments.push(segment)
         this.xPos = newXPos
+        this.steps += length
     }
 
     addUp = length => {
         const newYPos = this.yPos + length
         const pointA = { x: this.xPos, y: this.yPos }
         const pointB = { x: this.xPos, y: newYPos }
-        const segment = new Segment(pointA, pointB, orientation.up)
+        const segment = new Segment(pointA, pointB, orientation.up, this.steps)
         this.segments.push(segment)
         this.yPos = newYPos
+        this.steps += length
     }
 
     addDown = length => {
         const newYPos = this.yPos - length
         const pointA = { x: this.xPos, y: newYPos }
         const pointB = { x: this.xPos, y: this.yPos }
-        const segment = new Segment(pointA, pointB, orientation.down)
+        const segment = new Segment(
+            pointA,
+            pointB,
+            orientation.down,
+            this.steps
+        )
         this.segments.push(segment)
         this.yPos = newYPos
+        this.steps += length
     }
 
     addSegment = section => {
@@ -68,6 +88,7 @@ class Wire {
         this.xPos = 0
         this.yPos = 0
         this.segments = []
+        this.steps = 0
     }
 }
 

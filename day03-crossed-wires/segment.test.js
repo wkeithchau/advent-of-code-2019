@@ -4,33 +4,29 @@ import Segment from './segment'
 
 describe('Segment Class', function() {
     describe('Constructor', function() {
-        let x1
-        let x2
-        let y1
-        let y2
+        let pointA
+        let pointB
         let segment
 
         before(function() {
-            x1 = 1
-            x2 = 2
-            y1 = 3
-            y2 = 4
-            segment = new Segment(x1, x2, y1, y2)
+            pointA = { x: 1, y: 3 }
+            pointB = { x: 2, y: 4 }
+            segment = new Segment(pointA, pointB)
         })
 
         it('Sets up x1 properly', function() {
-            expect(segment.x1).to.equal(x1)
+            expect(segment.x1).to.equal(pointA.x)
         })
 
         it('Sets up x2 properly', function() {
-            expect(segment.x2).to.equal(x2)
+            expect(segment.x2).to.equal(pointB.x)
         })
 
         it('Sets up y1 properly', function() {
-            expect(segment.y1).to.equal(y1)
+            expect(segment.y1).to.equal(pointA.y)
         })
         it('Sets up y2 properly', function() {
-            expect(segment.y2).to.equal(y2)
+            expect(segment.y2).to.equal(pointB.y)
         })
     })
 })

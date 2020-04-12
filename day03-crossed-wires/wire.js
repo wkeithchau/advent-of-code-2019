@@ -8,28 +8,36 @@ class Wire {
 
     addLeft = length => {
         const newXPos = this.xPos - length
-        const segment = new Segment(newXPos, this.xPos, this.yPos, this.yPos)
+        const pointA = { x: newXPos, y: this.yPos }
+        const pointB = { x: this.xPos, y: this.yPos }
+        const segment = new Segment(pointA, pointB, orientation.left)
         this.segments.push(segment)
         this.xPos = newXPos
     }
 
     addRight = length => {
         const newXPos = this.xPos + length
-        const segment = new Segment(this.xPos, newXPos, this.yPos, this.yPos)
+        const pointA = { x: this.xPos, y: this.yPos }
+        const pointB = { x: newXPos, y: this.yPos }
+        const segment = new Segment(pointA, pointB, orientation.right)
         this.segments.push(segment)
         this.xPos = newXPos
     }
 
     addUp = length => {
         const newYPos = this.yPos + length
-        const segment = new Segment(this.xPos, this.xPos, this.yPos, newYPos)
+        const pointA = { x: this.xPos, y: this.yPos }
+        const pointB = { x: this.xPos, y: newYPos }
+        const segment = new Segment(pointA, pointB, orientation.up)
         this.segments.push(segment)
         this.yPos = newYPos
     }
 
     addDown = length => {
         const newYPos = this.yPos - length
-        const segment = new Segment(this.xPos, this.xPos, newYPos, this.yPos)
+        const pointA = { x: this.xPos, y: newYPos }
+        const pointB = { x: this.xPos, y: this.yPos }
+        const segment = new Segment(pointA, pointB, orientation.down)
         this.segments.push(segment)
         this.yPos = newYPos
     }

@@ -43,8 +43,8 @@ describe('Day03 - Crossed Wires', function() {
         it('Finds one cross', function() {
             const wire1 = new Wire()
             const wire2 = new Wire()
-            wire1.segments.push(new Segment(-5, 5, 0, 0))
-            wire2.segments.push(new Segment(-1, -1, -5, 1))
+            wire1.segments.push(new Segment({ x: -5, y: 0 }, { x: 5, y: 0 }))
+            wire2.segments.push(new Segment({ x: -1, y: -5 }, { x: -1, y: 1 }))
 
             const crosses = findCrosses(wire1, wire2)
 
@@ -56,10 +56,10 @@ describe('Day03 - Crossed Wires', function() {
         it('Finds multiple crosses', function() {
             const wire1 = new Wire()
             const wire2 = new Wire()
-            wire1.segments.push(new Segment(-5, 5, 0, 0))
-            wire1.segments.push(new Segment(-5, 5, -5, -5))
-            wire2.segments.push(new Segment(-1, -1, -5, 1))
-            wire2.segments.push(new Segment(2, 2, -1, 1))
+            wire1.segments.push(new Segment({ x: -5, y: 0 }, { x: 5, y: 0 }))
+            wire1.segments.push(new Segment({ x: -5, y: -5 }, { x: 5, y: -5 }))
+            wire2.segments.push(new Segment({ x: -1, y: -5 }, { x: -1, y: 1 }))
+            wire2.segments.push(new Segment({ x: 2, y: -1 }, { x: 2, y: 1 }))
 
             const crosses = findCrosses(wire1, wire2)
             const expectedCrosses = [

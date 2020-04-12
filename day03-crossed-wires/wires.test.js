@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 
-import { closestCross, crossDistance, findCrosses } from './wires'
+import { orientation } from './constants'
+import { closestCross, crossDistance, crossSteps, findCrosses } from './wires'
 import Wire from './wire'
 import Segment from './segment'
 
@@ -39,6 +40,44 @@ describe('Day03 - Crossed Wires', function() {
         })
     })
 
+    describe('crossSteps', function() {
+        it('Returns the shorter steps', function() {
+            const cross = { x: 5, y: 5 }
+            const seg1 = new Segment(
+                { x: -5, y: 5 },
+                { x: 20, y: 5 },
+                orientation.left,
+                5
+            )
+            const seg2 = new Segment(
+                { x: 5, y: 3 },
+                { x: 5, y: 7 },
+                orientation.down,
+                5
+            )
+
+            const steps = crossSteps(cross, [seg1, seg2])
+            expect(steps).to.equal(7)
+        })
+
+        it('Returns undefined when segments do not have steps', function() {
+            const cross = { x: 5, y: 5 }
+            const seg1 = new Segment(
+                { x: -5, y: 5 },
+                { x: 20, y: 5 },
+                orientation.left
+            )
+            const seg2 = new Segment(
+                { x: 5, y: 3 },
+                { x: 5, y: 7 },
+                orientation.down
+            )
+
+            const steps = crossSteps(cross, [seg1, seg2])
+            expect(steps).to.be.undefined
+        })
+    })
+
     describe('findCrosses', function() {
         it('Finds one cross', function() {
             const wire1 = new Wire()
@@ -71,6 +110,50 @@ describe('Day03 - Crossed Wires', function() {
             expect(crosses).to.have.length(3)
             expect(crosses).to.have.deep.members(expectedCrosses)
         })
+
+        it('Calculates the steps taken to the cross', function() {
+            const wire1 = new Wire()
+            const wire2 = new Wire()
+            wire1.segments.push(
+                new Segment(
+                    { x: -5, y: 0 },
+                    { x: 5, y: 0 },
+                    orientation.right,
+                    14
+                )
+            )
+            wire1.segments.push(
+                new Segment(
+                    { x: -5, y: -5 },
+                    { x: 5, y: -5 },
+                    orientation.left,
+                    56
+                )
+            )
+            wire2.segments.push(
+                new Segment(
+                    { x: -1, y: -5 },
+                    { x: -1, y: 1 },
+                    orientation.up,
+                    44
+                )
+            )
+            wire2.segments.push(
+                new Segment({ x: 2, y: -1 }, { x: 2, y: 1 }),
+                orientation.right,
+                67
+            )
+
+            const crosses = findCrosses(wire1, wire2)
+            const expectedCrosses = [
+                { x: -1, y: 0, distance: 1, steps: 18 },
+                { x: 2, y: 0, distance: 2, steps: 21 },
+                { x: -1, y: -5, distance: 6, steps: 44 },
+            ]
+
+            expect(crosses).to.have.length(3)
+            expect(crosses).to.have.deep.members(expectedCrosses)
+        })
     })
 
     describe('closestCross', function() {
@@ -78,21 +161,38 @@ describe('Day03 - Crossed Wires', function() {
         let cross2
 
         before(function() {
-            cross1 = { x: 3, y: 3, distance: 6 }
-            cross2 = { x: 10, y: 4, distance: 14 }
+            cross1 = { x: 3, y: 3, distance: 6, steps: 38 }
+            cross2 = { x: 10, y: 4, distance: 14, steps: 14 }
         })
 
-        it('Returns cross with shortest distance', function() {
-            const crosses = [cross1, cross2]
-            const cross = closestCross(crosses)
-            expect(cross).to.deep.equal(cross1)
+        describe('distance', function() {
+            it('Returns cross with shortest distance', function() {
+                const crosses = [cross1, cross2]
+                const cross = closestCross(crosses)
+                expect(cross).to.deep.equal(cross1)
+            })
+
+            it('Ignores cross at the port', function() {
+                const cross0 = { x: 0, y: 0, distance: 0 }
+                const crosses = [cross0, cross1, cross2]
+                const cross = closestCross(crosses)
+                expect(cross).to.deep.equal(cross1)
+            })
         })
 
-        it('Ignores cross at the port', function() {
-            const cross0 = { x: 0, y: 0, distance: 0 }
-            const crosses = [cross0, cross1, cross2]
-            const cross = closestCross(crosses)
-            expect(cross).to.deep.equal(cross1)
+        describe('steps', function() {
+            it('Returns cross with shortest steps', function() {
+                const crosses = [cross1, cross2]
+                const cross = closestCross(crosses, 'steps')
+                expect(cross).to.deep.equal(cross2)
+            })
+
+            it('Ignores cross at the port', function() {
+                const cross0 = { x: 0, y: 0, distance: 0, steps: 0 }
+                const crosses = [cross0, cross1, cross2]
+                const cross = closestCross(crosses, 'steps')
+                expect(cross).to.deep.equal(cross2)
+            })
         })
     })
 

@@ -62,7 +62,7 @@ class Segment {
             }
         }
 
-        const travelled = Math.abs(Math.abs(startPos) - Math.abs(selectedPos))
+        const travelled = Math.abs(startPos - selectedPos)
         return this.initial + travelled
     }
 }

@@ -1,5 +1,35 @@
+import { orientation } from './constants'
+
 export const crossDistance = cross => {
     return Math.abs(cross.x) + Math.abs(cross.y)
+}
+
+export const crossSteps = (cross, segments) => {
+    const stepDistances = []
+    segments.forEach(segment => {
+        let point
+        if (
+            segment.direction === orientation.left ||
+            segment.direction === orientation.right
+        ) {
+            point = cross.x
+        } else if (
+            segment.direction === orientation.up ||
+            segment.direction === orientation.down
+        ) {
+            point = cross.y
+        }
+        const steps = segment.steps(point)
+        if (steps !== undefined) {
+            stepDistances.push(steps)
+        }
+    })
+
+    if (stepDistances.length === 0) {
+        return
+    }
+
+    return Math.min(...stepDistances)
 }
 
 export const findCrosses = (wire1, wire2) => {
@@ -21,6 +51,10 @@ export const findCrosses = (wire1, wire2) => {
                 cross = { x: segment.x1, y: seg.y1 }
             }
             cross.distance = crossDistance(cross)
+            const steps = crossSteps(cross, [seg, segment])
+            if (steps !== undefined) {
+                cross.steps = steps
+            }
             crosses.push(cross)
         })
     })
@@ -28,12 +62,10 @@ export const findCrosses = (wire1, wire2) => {
     return crosses
 }
 
-export const closestCross = crosses => {
-    const nonZeroCrosses = crosses.filter(cross => cross.distance !== 0)
-    const distances = nonZeroCrosses.map(cross => cross.distance)
-    const shortestDistance = Math.min(...distances)
-    const closestCross = crosses.find(
-        cross => cross.distance === shortestDistance
-    )
+export const closestCross = (crosses, type = 'distance') => {
+    const nonZeroCrosses = crosses.filter(cross => cross[type] !== 0)
+    const values = nonZeroCrosses.map(cross => cross[type])
+    const minValue = Math.min(...values)
+    const closestCross = crosses.find(cross => cross[type] === minValue)
     return closestCross
 }

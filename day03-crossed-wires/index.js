@@ -1,5 +1,4 @@
 import { getInput } from '../utils/input'
-
 import Wire from './wire'
 import { closestCross, findCrosses } from './wires'
 

@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import readline from 'readline'
 
 const PROCESS_PATH = `file://${process.cwd()}`
 
@@ -14,4 +15,18 @@ export const getInput = (absUrl, seperator) => {
     const input = readFile(inputPath)
     const lines = input.split(seperator)
     return lines
+}
+
+export const userInput = question => {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    })
+
+    return new Promise(resolve => {
+        rl.question(question, input => {
+            resolve(input)
+            rl.close()
+        })
+    })
 }

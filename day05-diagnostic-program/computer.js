@@ -84,6 +84,90 @@ class Computer {
         return length
     }
 
+    jumpTrueOp = (param1, param2) => {
+        let length = opLength.jumpTrue
+        const start = this.pointer + 1
+        const end = this.pointer + length
+        const positions = this.program.slice(start, end)
+        const [position1, position2] = positions
+
+        let value1 = this.program[position1]
+        if (param1 === parameterMode.immediate) {
+            value1 = position1
+        }
+        let value2 = this.program[position2]
+        if (param2 === parameterMode.immediate) {
+            value2 = position2
+        }
+
+        if (value1 !== 0) {
+            this.pointer = value2
+            length = 0
+        }
+        return length
+    }
+
+    jumpFalseOp = (param1, param2) => {
+        let length = opLength.jumpFalse
+        const start = this.pointer + 1
+        const end = this.pointer + length
+        const positions = this.program.slice(start, end)
+        const [position1, position2] = positions
+
+        let value1 = this.program[position1]
+        if (param1 === parameterMode.immediate) {
+            value1 = position1
+        }
+        let value2 = this.program[position2]
+        if (param2 === parameterMode.immediate) {
+            value2 = position2
+        }
+
+        if (value1 === 0) {
+            this.pointer = value2
+            length = 0
+        }
+        return length
+    }
+
+    lessThanOp = (param1, param2) => {
+        const length = opLength.lessThan
+        const start = this.pointer + 1
+        const end = this.pointer + length
+        const positions = this.program.slice(start, end)
+        const [position1, position2, destination] = positions
+
+        let value1 = this.program[position1]
+        if (param1 === parameterMode.immediate) {
+            value1 = position1
+        }
+        let value2 = this.program[position2]
+        if (param2 === parameterMode.immediate) {
+            value2 = position2
+        }
+        this.program[destination] = Number(value1 < value2)
+        return length
+    }
+
+    equalOp = (param1, param2) => {
+        const length = opLength.lessThan
+        const start = this.pointer + 1
+        const end = this.pointer + length
+        const positions = this.program.slice(start, end)
+        const [position1, position2, destination] = positions
+
+        let value1 = this.program[position1]
+        if (param1 === parameterMode.immediate) {
+            value1 = position1
+        }
+        let value2 = this.program[position2]
+        if (param2 === parameterMode.immediate) {
+            value2 = position2
+        }
+        this.program[destination] = Number(value1 === value2)
+        return length
+    }
+
     endOp = () => {
         this.end = true
         return opLength.end
@@ -104,6 +188,14 @@ class Computer {
             opFn = this.outputOp
         } else if (op === opcode.end) {
             opFn = this.endOp
+        } else if (op === opcode.jumpTrue) {
+            opFn = this.jumpTrueOp
+        } else if (op === opcode.jumpFalse) {
+            opFn = this.jumpFalseOp
+        } else if (op === opcode.lessThan) {
+            opFn = this.lessThanOp
+        } else if (op === opcode.equal) {
+            opFn = this.equalOp
         }
         const length = await opFn(...param)
         this.next(length)

@@ -243,6 +243,282 @@ describe('Computer Class', function() {
         })
     })
 
+    describe('jumpTrueOp', function() {
+        it('param1 position mode is a non-zero value with param2 position mode', function() {
+            Computer.program = [5, 3, 4, 3, 10]
+            Computer.jumpTrueOp(0, 0)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(10)
+        })
+
+        it('param1 immediate mode is a non-zero value with param2 position mode', function() {
+            Computer.program = [15, 3, 4, 3, 10]
+            Computer.jumpTrueOp(1, 0)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(10)
+        })
+
+        it('param1 position mode is a non-zero value with param2 immediate mode', function() {
+            Computer.program = [105, 3, 4, 3, 10]
+            Computer.jumpTrueOp(0, 1)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(4)
+        })
+
+        it('param1 immediate mode is a non-zero value with param2 immediate mode', function() {
+            Computer.program = [115, 3, 4, 3, 10]
+            Computer.jumpTrueOp(1, 1)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(4)
+        })
+
+        it('param1 position mode is not a non-zero value with param2 position mode', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            Computer.pointer = -1
+            Computer.jumpTrueOp(0, 0)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(-1)
+        })
+
+        it('param1 immediate mode is not a non-zero value with param2 position mode', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            Computer.pointer = -1
+            Computer.jumpTrueOp(1, 0)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(-1)
+        })
+
+        it('param1 position mode is not a non-zero value with param2 immediate mode', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            Computer.pointer = -1
+            Computer.jumpTrueOp(0, 1)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(-1)
+        })
+
+        it('param1 immediate mode is not a non-zero value with param2 immediate mode', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            Computer.pointer = -1
+            Computer.jumpTrueOp(1, 1)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(-1)
+        })
+
+        it('Returns instruction length of 0 when true', function() {
+            Computer.program = [5, 3, 4, 3, 10]
+            const length = Computer.jumpTrueOp(0, 0)
+            expect(length).to.equal(0)
+        })
+
+        it('Returns instruction length of 3 when false', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            const length = Computer.jumpTrueOp(0, 0)
+            expect(length).to.equal(opLength.jumpTrue)
+        })
+    })
+
+    describe('jumpFalseOp', function() {
+        it('param1 position mode is a zero value with param2 position mode', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            Computer.jumpFalseOp(0, 0)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(10)
+        })
+
+        it('param1 immediate mode is a zero value with param2 position mode', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            Computer.jumpFalseOp(1, 0)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(10)
+        })
+
+        it('param1 position mode is a zero value with param2 immediate mode', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            Computer.jumpFalseOp(0, 1)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(4)
+        })
+
+        it('param1 immediate mode is a zero value with param2 immediate mode', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            Computer.jumpFalseOp(1, 1)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(4)
+        })
+
+        it('param1 position mode is not a zero value with param2 position mode', function() {
+            Computer.program = [6, 3, 4, 3, 10]
+            Computer.pointer = -1
+            Computer.jumpFalseOp(0, 0)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(-1)
+        })
+
+        it('param1 immediate mode is not a zero value with param2 position mode', function() {
+            Computer.program = [16, 3, 4, 3, 10]
+            Computer.pointer = -1
+            Computer.jumpFalseOp(1, 0)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(-1)
+        })
+
+        it('param1 position mode is not a zero value with param2 immediate mode', function() {
+            Computer.program = [106, 3, 4, 3, 10]
+            Computer.pointer = -1
+            Computer.jumpFalseOp(0, 1)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(-1)
+        })
+
+        it('param1 immediate mode is not a zero value with param2 immediate mode', function() {
+            Computer.program = [116, 3, 4, 3, 10]
+            Computer.pointer = -1
+            Computer.jumpFalseOp(1, 1)
+            const pointer = Computer.pointer
+            expect(pointer).to.equal(-1)
+        })
+
+        it('Returns instruction length of 0 when true', function() {
+            Computer.program = [0, 0, 4, 3, 10]
+            const length = Computer.jumpFalseOp(0, 0)
+            expect(length).to.equal(0)
+        })
+
+        it('Returns instruction length of 3 when false', function() {
+            Computer.program = [5, 3, 4, 3, 10]
+            const length = Computer.jumpFalseOp(0, 0)
+            expect(length).to.equal(opLength.jumpFalse)
+        })
+    })
+
+    describe('lessThanOp', function() {
+        it('param1 position mode is less than param2 position mode', function() {
+            Computer.program = [7, 4, 5, 6, 3, 10, 0]
+            Computer.lessThanOp(0, 0)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(1)
+        })
+
+        it('param1 immediate mode is less than param2 position mode', function() {
+            Computer.program = [17, 4, 5, 6, 3, 10, 0]
+            Computer.lessThanOp(1, 0)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(1)
+        })
+
+        it('param1 position mode is less than param2 immediate mode', function() {
+            Computer.program = [107, 4, 5, 6, 3, 10, 0]
+            Computer.lessThanOp(0, 1)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(1)
+        })
+
+        it('param1 immediate mode is less than param2 immediate mode', function() {
+            Computer.program = [117, 4, 5, 6, 3, 10, 0]
+            Computer.lessThanOp(1, 1)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(1)
+        })
+
+        it('param1 position mode is not less than param2 position mode', function() {
+            Computer.program = [7, 5, 4, 6, 3, 10, 0]
+            Computer.lessThanOp(0, 0)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(0)
+        })
+
+        it('param1 immediate mode is not less than param2 position mode', function() {
+            Computer.program = [17, 5, 4, 6, 3, 10, 0]
+            Computer.lessThanOp(1, 0)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(0)
+        })
+
+        it('param1 position mode is not less than param2 immediate mode', function() {
+            Computer.program = [107, 5, 4, 6, 3, 10, 0]
+            Computer.lessThanOp(0, 1)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(0)
+        })
+
+        it('param1 immediate mode is not less than param2 immediate mode', function() {
+            Computer.program = [117, 5, 4, 6, 3, 10, 0]
+            Computer.lessThanOp(1, 1)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(0)
+        })
+
+        it('Returns instruction length of 4', function() {
+            Computer.program = [7, 4, 5, 6, 3, 10, 0]
+            const length = Computer.lessThanOp(0, 0)
+            expect(length).to.equal(opLength.lessThan)
+        })
+    })
+
+    describe('equalOp', function() {
+        it('param1 position mode is equal param2 position mode', function() {
+            Computer.program = [8, 4, 4, 6, 4, 4, 0]
+            Computer.equalOp(0, 0)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(1)
+        })
+
+        it('param1 immediate mode is equal param2 position mode', function() {
+            Computer.program = [18, 4, 4, 6, 4, 4, 0]
+            Computer.equalOp(1, 0)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(1)
+        })
+
+        it('param1 position mode is equal param2 immediate mode', function() {
+            Computer.program = [108, 4, 4, 6, 4, 4, 0]
+            Computer.equalOp(0, 1)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(1)
+        })
+
+        it('param1 immediate mode is equal param2 immediate mode', function() {
+            Computer.program = [118, 4, 4, 6, 4, 4, 0]
+            Computer.equalOp(1, 1)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(1)
+        })
+
+        it('param1 position mode is not equal param2 position mode', function() {
+            Computer.program = [8, 5, 4, 6, 3, 10, 0]
+            Computer.equalOp(0, 0)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(0)
+        })
+
+        it('param1 immediate mode is not equal param2 position mode', function() {
+            Computer.program = [18, 5, 4, 6, 3, 10, 0]
+            Computer.equalOp(1, 0)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(0)
+        })
+
+        it('param1 position mode is not equal param2 immediate mode', function() {
+            Computer.program = [108, 5, 4, 6, 3, 10, 0]
+            Computer.equalOp(0, 1)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(0)
+        })
+
+        it('param1 immediate mode is not equal param2 immediate mode', function() {
+            Computer.program = [118, 5, 4, 6, 3, 10, 0]
+            Computer.equalOp(1, 1)
+            const destValue = Computer.program[6]
+            expect(destValue).to.equal(0)
+        })
+
+        it('Returns instruction length of 4', function() {
+            Computer.program = [8, 4, 5, 6, 3, 10, 0]
+            const length = Computer.equalOp(0, 0)
+            expect(length).to.equal(opLength.equal)
+        })
+    })
+
     describe('endOp', function() {
         it('Sets end to true', function() {
             Computer.program = [99]
@@ -295,6 +571,42 @@ describe('Computer Class', function() {
             Computer.program = [4]
             await Computer.execute()
             expect(outputStub.calledOnce).to.be.true
+        })
+
+        it('Calls jumpTrueOp when opcode is 5', async function() {
+            const jumpTrueStub = sinon.stub(Computer, 'jumpTrueOp')
+            stubs.push(jumpTrueStub)
+
+            Computer.program = [5]
+            await Computer.execute()
+            expect(jumpTrueStub.calledOnce).to.be.true
+        })
+
+        it('Calls jumpFalseOp when opcode is 6', async function() {
+            const jumpFalseStub = sinon.stub(Computer, 'jumpFalseOp')
+            stubs.push(jumpFalseStub)
+
+            Computer.program = [6]
+            await Computer.execute()
+            expect(jumpFalseStub.calledOnce).to.be.true
+        })
+
+        it('Calls lessThanOp when opcode is 7', async function() {
+            const lessThanStub = sinon.stub(Computer, 'lessThanOp')
+            stubs.push(lessThanStub)
+
+            Computer.program = [7]
+            await Computer.execute()
+            expect(lessThanStub.calledOnce).to.be.true
+        })
+
+        it('Calls equalOp when opcode is 8', async function() {
+            const equalStub = sinon.stub(Computer, 'equalOp')
+            stubs.push(equalStub)
+
+            Computer.program = [8]
+            await Computer.execute()
+            expect(equalStub.calledOnce).to.be.true
         })
 
         it('Calls endOp when opcode is 99', async function() {

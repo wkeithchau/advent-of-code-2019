@@ -32,3 +32,13 @@ export const orbitCount = directory => {
     })
     return count
 }
+
+export const rootPath = (departure, nodeName) => {
+    const path = []
+    let obj = departure
+    while (obj.name !== nodeName) {
+        obj = obj.parent
+        path.push(obj.name)
+    }
+    return path
+}

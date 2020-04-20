@@ -19,6 +19,7 @@
         "day3": "node -r esm day03-crossed-wires/index.js",
         "day4": "node -r esm day04-secure-container/index.js",
         "day5": "node -r esm day05-diagnostic-program/index.js",
-        "day6": "node -r esm day06-orbit-map/index.js"
+        "day6": "node -r esm day06-orbit-map/index.js",
+        "day7": "node -r esm day07-amp-circuit/index.js"
     }
 }

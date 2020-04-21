@@ -2,11 +2,17 @@ import { userInput } from '../utils/input'
 import { opcode, opLength, parameterMode } from './constants'
 
 class Computer {
+    name = ''
     pointer = 0
     end = false
+    logging = true
     program = []
     input = []
     output = []
+
+    constructor(name = '') {
+        this.name = name
+    }
 
     opcode = () => {
         const instruction = String(this.program[this.pointer]).padStart(5, '0')
@@ -89,7 +95,9 @@ class Computer {
             value = position
         }
         this.output.push(value)
-        console.log(value)
+        if (this.logging === true) {
+            console.log(value)
+        }
         return length
     }
 
@@ -210,9 +218,13 @@ class Computer {
         this.next(length)
     }
 
-    run = async (program, input = []) => {
+    run = async (program, input = [], options = { logging: true }) => {
         this.program = program
         this.input = input
+
+        if (options.logging === false) {
+            this.logging = options.logging
+        }
 
         while (this.end !== true) {
             await this.execute()
@@ -221,8 +233,10 @@ class Computer {
     }
 
     reset = () => {
+        this.name = ''
         this.pointer = 0
         this.end = false
+        this.logging = true
         this.program = []
         this.input = []
         this.output = []

@@ -23,6 +23,15 @@ describe('Computer Class', function() {
         }
     })
 
+    describe('Constructor', function() {
+        it('Sets name for the computer', function() {
+            const name = 'con-name'
+            const comp = new Computer(name)
+            const compName = comp.name
+            expect(compName).to.equal(name)
+        })
+    })
+
     describe('opcode', function() {
         it('Returns the opcode in first element of the array', function() {
             computer.program = [2]
@@ -268,6 +277,17 @@ describe('Computer Class', function() {
             computer.program = [104, position, 0]
             computer.outputOp(1)
             expect(consoleStub.calledOnceWith(position)).to.be.true
+        })
+
+        it('Does not output if logging is set to false', function() {
+            const consoleStub = sinon.stub(console, 'log')
+            stubs.push(consoleStub)
+
+            const position = 2
+            computer.program = [104, position, 0]
+            computer.logging = false
+            computer.outputOp(1)
+            expect(consoleStub.calledOnce).to.be.false
         })
 
         it('Adds output to output array', function() {
@@ -683,6 +703,16 @@ describe('Computer Class', function() {
             await computer.run(inputProgram)
             const program = computer.program
             expect(program).to.have.ordered.members(inputProgram)
+        })
+
+        it('Sets logging to false when provided in the options', async function() {
+            computer.end = true
+            const inputProgram = [1, 2, 3]
+            const logBefore = computer.logging
+            await computer.run(inputProgram, [], { logging: false })
+            const logAfter = computer.logging
+            expect(logBefore).to.be.true
+            expect(logAfter).to.be.false
         })
 
         it('Returns output array', async function() {

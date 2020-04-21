@@ -229,5 +229,4 @@ class Computer {
     }
 }
 
-const computer = new Computer()
-export default computer
+export default Computer

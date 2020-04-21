@@ -5,10 +5,13 @@ class Computer {
     name = ''
     pointer = 0
     end = false
+    debug = false
     logging = true
+    loop = false
     program = []
     input = []
     output = []
+    outputComputer = undefined
 
     constructor(name = '') {
         this.name = name
@@ -74,7 +77,14 @@ class Computer {
 
         let input
         if (this.input.length === 0) {
-            input = await userInput('input: ')
+            if (this.loop === true) {
+                return
+            }
+            let question = 'input: '
+            if (this.debug === true) {
+                question = `${this.name} ${question}`
+            }
+            input = await userInput(question)
         } else {
             input = this.input.shift()
         }
@@ -94,10 +104,17 @@ class Computer {
         if (param1 === parameterMode.immediate) {
             value = position
         }
-        this.output.push(value)
         if (this.logging === true) {
-            console.log(value)
+            let out = value
+            if (this.debug === true) {
+                out = `${this.name} output: ${out}`
+            }
+            console.log(out)
         }
+        if (this.outputComputer !== undefined) {
+            this.outputComputer.input.push(value)
+        }
+        this.output.push(value)
         return length
     }
 
@@ -215,15 +232,29 @@ class Computer {
             opFn = this.equalOp
         }
         const length = await opFn(...param)
-        this.next(length)
+        if (length !== undefined) {
+            this.next(length)
+        }
     }
 
-    run = async (program, input = [], options = { logging: true }) => {
-        this.program = program
-        this.input = input
+    run = async (
+        program,
+        input = [],
+        options = { debug: false, logging: true, loop: false }
+    ) => {
+        this.program = program.slice()
+        this.input = input.slice(0)
+
+        if (options.debug === true) {
+            this.debug = options.debug
+        }
 
         if (options.logging === false) {
             this.logging = options.logging
+        }
+
+        if (options.loop === true) {
+            this.loop = options.loop
         }
 
         while (this.end !== true) {
@@ -236,10 +267,13 @@ class Computer {
         this.name = ''
         this.pointer = 0
         this.end = false
+        this.debug = false
         this.logging = true
+        this.loop = false
         this.program = []
         this.input = []
         this.output = []
+        this.outputComputer = undefined
     }
 }
 

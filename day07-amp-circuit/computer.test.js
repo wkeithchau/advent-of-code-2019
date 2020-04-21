@@ -205,6 +205,13 @@ describe('Computer Class', function() {
             expect(destValue).to.equal(input)
         })
 
+        it('Returns undefined when loop is true and input array is empty', async function() {
+            computer.program = [3, 2, 0]
+            computer.loop = true
+            const length = await computer.inputOp()
+            expect(length).to.be.undefined
+        })
+
         it('Does not use readline question when input array is not empty', async function() {
             let callCount = 0
             const readlineStub = sinon
@@ -288,6 +295,18 @@ describe('Computer Class', function() {
             computer.logging = false
             computer.outputOp(1)
             expect(consoleStub.calledOnce).to.be.false
+        })
+
+        it('Adds output to next computer`s input', function() {
+            const consoleStub = sinon.stub(console, 'log')
+            stubs.push(consoleStub)
+
+            const position = 2
+            computer.program = [104, position, 0]
+            computer.outputComputer = { input: [] }
+            computer.outputOp(1)
+            const input = computer.outputComputer.input[0]
+            expect(input).to.equal(position)
         })
 
         it('Adds output to output array', function() {
@@ -694,6 +713,17 @@ describe('Computer Class', function() {
             await computer.execute()
             expect(nextStub.calledOnce).to.be.true
         })
+
+        it('Does not call next when length is undefined', async function() {
+            const nextStub = sinon.stub(computer, 'next')
+            stubs.push(nextStub)
+
+            computer.end = true
+            computer.loop = true
+            computer.program = [3, 1]
+            await computer.execute()
+            expect(nextStub.calledOnce).to.be.false
+        })
     })
 
     describe('run', function() {
@@ -713,6 +743,16 @@ describe('Computer Class', function() {
             const logAfter = computer.logging
             expect(logBefore).to.be.true
             expect(logAfter).to.be.false
+        })
+
+        it('Sets loop to true when provided in the options', async function() {
+            computer.end = true
+            const inputProgram = [1, 2, 3]
+            const loopBefore = computer.loop
+            await computer.run(inputProgram, [], { loop: true })
+            const loopAfter = computer.loop
+            expect(loopBefore).to.be.false
+            expect(loopAfter).to.be.true
         })
 
         it('Returns output array', async function() {

@@ -195,6 +195,42 @@ describe('Computer Class', function() {
             expect(destValue).to.equal(input)
         })
 
+        it('Does not use readline question when input array is not empty', async function() {
+            let callCount = 0
+            const readlineStub = sinon
+                .stub(readline, 'createInterface')
+                .callsFake(() => ({
+                    question: (question, callback) => {
+                        callCount += 1
+                        callback()
+                    },
+                    close: () => {},
+                }))
+            stubs.push(readlineStub)
+
+            Computer.input = [1]
+            Computer.program = [3, 2, 0]
+            await Computer.inputOp()
+            expect(callCount).to.equal(0)
+        })
+
+        it('Sets the first element in input array and in destination when input array is not empty', async function() {
+            const input = 1
+            Computer.input = [input]
+            Computer.program = [3, 2, 0]
+            await Computer.inputOp()
+            const destValue = Computer.program[2]
+            expect(destValue).to.equal(input)
+        })
+
+        it('Removes first element in input array when input array is not empty', async function() {
+            const input = 1
+            Computer.input = [input]
+            Computer.program = [3, 2, 0]
+            await Computer.inputOp()
+            expect(Computer.input).to.be.empty
+        })
+
         it('Returns instruction length of 2', async function() {
             const readlineStub = sinon
                 .stub(readline, 'createInterface')
@@ -231,6 +267,17 @@ describe('Computer Class', function() {
             Computer.program = [104, position, 0]
             Computer.outputOp(1)
             expect(consoleStub.calledOnceWith(position)).to.be.true
+        })
+
+        it('Adds output to output array', function() {
+            const consoleStub = sinon.stub(console, 'log')
+            stubs.push(consoleStub)
+
+            const position = 2
+            Computer.program = [104, position, 0]
+            Computer.outputOp(1)
+            const output = Computer.output[0]
+            expect(output).to.equal(position)
         })
 
         it('Returns instruction length of 2', async function() {
@@ -635,6 +682,14 @@ describe('Computer Class', function() {
             await Computer.run(inputProgram)
             const program = Computer.program
             expect(program).to.have.ordered.members(inputProgram)
+        })
+
+        it('Returns output array', async function() {
+            Computer.end = true
+            const output = [3, 2, 1]
+            Computer.output = output
+            const runOutput = await Computer.run([99])
+            expect(runOutput).to.have.ordered.members(output)
         })
 
         it('Finishes when it end is true', async function() {

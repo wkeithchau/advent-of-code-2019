@@ -5,6 +5,8 @@ class Computer {
     pointer = 0
     end = false
     program = []
+    input = []
+    output = []
 
     opcode = () => {
         const instruction = String(this.program[this.pointer]).padStart(5, '0')
@@ -64,7 +66,13 @@ class Computer {
         const positions = this.program.slice(start, end)
         const [destination] = positions
 
-        const input = await userInput('input: ')
+        let input
+        if (this.input.length === 0) {
+            input = await userInput('input: ')
+        } else {
+            input = this.input.shift()
+        }
+
         this.program[destination] = Number(input)
         return length
     }
@@ -80,6 +88,7 @@ class Computer {
         if (param1 === parameterMode.immediate) {
             value = position
         }
+        this.output.push(value)
         console.log(value)
         return length
     }
@@ -201,18 +210,22 @@ class Computer {
         this.next(length)
     }
 
-    run = async program => {
+    run = async (program, input = []) => {
         this.program = program
+        this.input = input
 
         while (this.end !== true) {
             await this.execute()
         }
+        return this.output
     }
 
     reset = () => {
         this.pointer = 0
         this.end = false
         this.program = []
+        this.input = []
+        this.output = []
     }
 }
 

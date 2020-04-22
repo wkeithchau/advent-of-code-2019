@@ -1,5 +1,6 @@
 import { getInput } from '../utils/input'
-import { findFewestZero } from './image'
+import { displayImage, findFewestZero, getLayers, visiblePixels } from './image'
+import { pixel } from './constants'
 
 const INPUT = getInput(import.meta.url, '')
 const IMAGE = INPUT.map(data => Number(data))
@@ -14,4 +15,13 @@ const part1 = () => {
     )
 }
 
+const part2 = () => {
+    const layers = getLayers(IMAGE)
+    const pixels = visiblePixels(layers)
+    const layeredPixels = getLayers(pixels, { width: pixel.width, height: 1 })
+    console.log('Message produced:')
+    displayImage(layeredPixels)
+}
+
 part1()
+part2()

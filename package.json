@@ -21,6 +21,7 @@
         "day5": "node -r esm day05-diagnostic-program/index.js",
         "day6": "node -r esm day06-orbit-map/index.js",
         "day7": "node -r esm day07-amp-circuit/index.js",
-        "day8": "node -r esm day08-image-format/index.js"
+        "day8": "node -r esm day08-image-format/index.js",
+        "day9": "node -r esm day09-sensor-boost/index.js"
     }
 }

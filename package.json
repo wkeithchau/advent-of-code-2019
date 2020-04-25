@@ -23,6 +23,7 @@
         "day7": "node -r esm day07-amp-circuit/index.js",
         "day8": "node -r esm day08-image-format/index.js",
         "day9": "node -r esm day09-sensor-boost/index.js",
-        "day10": "node -r esm day10-monitoring-station/index.js"
+        "day10": "node -r esm day10-monitoring-station/index.js",
+        "day11": "node -r esm day11-space-police/index.js"
     }
 }

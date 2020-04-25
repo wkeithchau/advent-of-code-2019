@@ -1,6 +1,12 @@
 import { expect } from 'chai'
 
-import { bestLocation, findAsteroids, getAngle, surveyAsteroids } from './map'
+import {
+    bestLocation,
+    findAsteroids,
+    getAngle,
+    surveyAsteroids,
+    vapOrder,
+} from './map'
 
 describe('Day10 - Monitoring Station', function() {
     describe('findAsteroids', function() {
@@ -77,9 +83,9 @@ describe('Day10 - Monitoring Station', function() {
                 [0, 2],
             ]
             const expectedData = [
-                { x: 1, y: 0, data: ['1--', '2+-'], count: 2 },
-                { x: 2, y: 1, data: ['1++', '0.5+-'], count: 2 },
-                { x: 0, y: 2, data: ['2-+', '0.5-+'], count: 2 },
+                { x: 1, y: 0, data: ['1++', '2-+'], count: 2 },
+                { x: 2, y: 1, data: ['1--', '0.5-+'], count: 2 },
+                { x: 0, y: 2, data: ['2+-', '0.5+-'], count: 2 },
             ]
             const data = surveyAsteroids(asteroids)
             expect(data).to.have.length(3)
@@ -207,6 +213,39 @@ describe('Day10 - Monitoring Station', function() {
             expect(asteroid.x).to.equal(expectedAsteroid.x)
             expect(asteroid.y).to.equal(expectedAsteroid.y)
             expect(asteroid.count).to.equal(expectedAsteroid.count)
+        })
+    })
+
+    describe('vapOrder', function() {
+        it('Sample test 4: 20x20 200th vaporized at 8,2', function() {
+            const input = [
+                '.#..##.###...#######',
+                '##.############..##.',
+                '.#.######.########.#',
+                '.###.#######.####.#.',
+                '#####.##.#.##.###.##',
+                '..#####..#.#########',
+                '####################',
+                '#.####....###.#.#.##',
+                '##.#################',
+                '#####.##.###..####..',
+                '..######..##.#######',
+                '####.##.####...##..#',
+                '.#####..#.######.###',
+                '##...#.##########...',
+                '#.##########.#######',
+                '.####.#.###.###.#.##',
+                '....##.##.###..#####',
+                '.#.#.###########.###',
+                '#.#.#.#####.####.###',
+                '###.##.####.##.#..##',
+            ]
+            const map = input.map(val => val.split(''))
+            const asteroid = bestLocation(map, true)
+            const data = vapOrder(asteroid)
+            const vap200 = data[199]
+            expect(vap200.x).to.equal(8)
+            expect(vap200.y).to.equal(2)
         })
     })
 })

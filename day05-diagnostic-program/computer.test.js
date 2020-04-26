@@ -7,6 +7,7 @@ import Computer from './computer'
 
 describe('Computer Class', function() {
     let stubs
+
     before(function() {
         stubs = []
     })

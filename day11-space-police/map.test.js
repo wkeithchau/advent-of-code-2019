@@ -121,12 +121,20 @@ describe('Map Class', function() {
     })
 
     describe('run', function() {
-        it('Sends first input to outputComputer as black', async function() {
+        it('Sends first input to outputComputer as black by default', async function() {
             map.outputComputer = { input: [] }
             map.end = true
             await map.run()
             const output = map.outputComputer.input
             expect(output).to.have.ordered.members([0])
+        })
+
+        it('Sends first input to outputComputer as first parameter', async function() {
+            map.outputComputer = { input: [] }
+            map.end = true
+            await map.run(1)
+            const output = map.outputComputer.input
+            expect(output).to.have.ordered.members([1])
         })
 
         it('Runs execute', async function() {
@@ -147,6 +155,54 @@ describe('Map Class', function() {
             map.end = true
             await map.run()
             expect(executeSpy.calledOnce).to.be.false
+        })
+    })
+
+    describe('display', function() {
+        it('Displays the map correctly (letter A)', function() {
+            const logStub = sinon.stub(console, 'log')
+            stubs.push(logStub)
+
+            const aLetter = {
+                '0,0': 0,
+                '1,0': 0,
+                '2,0': 1,
+                '3,0': 1,
+                '4,0': 0,
+                '5,0': 0,
+                '0,1': 0,
+                '1,1': 1,
+                '4,1': 1,
+                '0,2': 0,
+                '1,2': 1,
+                '4,2': 1,
+                '0,3': 0,
+                '1,3': 1,
+                '2,3': 1,
+                '3,3': 1,
+                '4,3': 1,
+                '0,4': 0,
+                '1,4': 1,
+                '2,4': 0,
+                '3,4': 0,
+                '4,4': 1,
+                '0,5': 0,
+                '1,5': 1,
+                '2,5': 0,
+                '3,5': 0,
+                '4,5': 1,
+            }
+            map.panels = aLetter
+            const expectedOutput = [
+                '..██..',
+                '.█..█.',
+                '.█..█.',
+                '.████.',
+                '.█..█.',
+                '.█..█.',
+            ]
+            const output = map.display()
+            expect(output).to.have.ordered.members(expectedOutput)
         })
     })
 })

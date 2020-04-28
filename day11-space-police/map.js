@@ -40,12 +40,52 @@ class Map {
         }
     }
 
-    run = async () => {
-        this.outputComputer.input.push(colorCode.black)
+    run = async (startColor = colorCode.black) => {
+        this.outputComputer.input.push(startColor)
 
         while (this.end !== true) {
             await this.execute()
         }
+    }
+
+    display = () => {
+        const colors = Object.values(this.panels)
+        const coordinates = Object.keys(this.panels)
+        const xValues = []
+        const yValues = []
+        coordinates.forEach(coord => {
+            const [x, y] = coord.split(',')
+            xValues.push(x)
+            yValues.push(y)
+        })
+        const xSize = Math.max(...xValues)
+        const ySize = Math.max(...yValues)
+        const pixels = []
+        for (let i = 0; i < ySize + 1; i++) {
+            const row = Array(xSize + 1).fill(colorCode.black)
+            pixels.push(row)
+        }
+
+        coordinates.forEach((coord, idx) => {
+            const x = xValues[idx]
+            const y = yValues[idx]
+            pixels[y][x] = colors[idx]
+        })
+        const display = []
+        pixels.forEach(row => {
+            const colored = row.map(value => {
+                if (value === colorCode.white) {
+                    return '█'
+                }
+                if (value === colorCode.black) {
+                    return '.'
+                }
+            })
+            const line = colored.join('')
+            display.push(line)
+            console.log(line)
+        })
+        return display
     }
 
     reset = () => {
